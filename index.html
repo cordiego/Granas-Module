@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Granas Module — Perovskite Solar Intelligence</title>
+  <meta name="description" content="Unified perovskite solar module simulator. Mie/TMM optics, Bayesian optimization, and HJB control — real physical inputs, real engineering outputs in Watts, mA/cm², nm, °C/s.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <div class="navbar-logo">🔬 Granas Module</div>
+    <ul class="navbar-links" id="navLinks">
+      <li><a onclick="showPage('landing')" class="active" data-page="landing">Home</a></li>
+      <li><a onclick="showPage('engines')" data-page="engines">Engines</a></li>
+      <li><a onclick="showPage('outputs')" data-page="outputs">Module Outputs</a></li>
+      <li><a onclick="showPage('simulator')" data-page="simulator">Simulator</a></li>
+      <li><a onclick="showPage('blueprint')" data-page="blueprint">Blueprint</a></li>
+      <li><a onclick="showPage('contact')" data-page="contact">Contact</a></li>
+      <li><a href="https://github.com/cordiego" target="_blank" class="navbar-cta">GitHub ↗</a></li>
+    </ul>
+    <button class="navbar-mobile-toggle" onclick="toggleMobile()" aria-label="Menu">☰</button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     PAGE: LANDING
+     ============================================================ -->
+<div class="page active" id="page-landing">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-particles" id="particles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Perovskite Solar Module Intelligence</div>
+      <h1>From Photons to Watts. One Pipeline.</h1>
+      <p>Granas Module connects <strong>Mie/TMM optics</strong>, <strong>Bayesian ink optimization</strong>, and <strong>HJB annealing control</strong> into a single orchestrator — outputting real Watts, mA/cm², and kWh from the 17×10.5 cm Granas Blueprint geometry.</p>
+      <div class="hero-cta-group">
+        <a class="btn btn-primary" onclick="showPage('simulator')">Run Simulator →</a>
+        <a class="btn btn-secondary" onclick="showPage('engines')">View Engines</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-value">3</div>
+          <div class="hero-stat-label">Physics Engines</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">156 cm²</div>
+          <div class="hero-stat-label">Blueprint Active Area</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">22%+</div>
+          <div class="hero-stat-label">Target PCE</div>
+        </div>
+        <div>
+          <div class="hero-stat-value">6.6 kWh</div>
+          <div class="hero-stat-label">Annual Energy</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technology Stack -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Pipeline Architecture</div>
+        <h2>Three Engines. One Module.</h2>
+        <p>Each engine is grounded in peer-reviewed physics. Together they form a complete perovskite fabrication intelligence stack.</p>
+      </div>
+      <div class="products-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">🔬</div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-emerald); font-weight: 600;">TMM + Mie</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Optical Multilayer</div>
+        </div>
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">🤖</div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-emerald); font-weight: 600;">Bayesian GP</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">6D Ink Optimization</div>
+        </div>
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">🧠</div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-emerald); font-weight: 600;">HJB Control</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Optimal Annealing</div>
+        </div>
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">☀️</div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-emerald); font-weight: 600;">AM1.5G</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Solar Spectrum</div>
+        </div>
+        <div style="text-align: center; padding: 24px;">
+          <div style="font-size: 32px; margin-bottom: 8px;">📡</div>
+          <div style="font-family: var(--font-mono); font-size: 13px; color: var(--accent-emerald); font-weight: 600;">SCADA-Ready</div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">JSON / API / CSV</div>
+        </div>
+      </div>
+
+      <!-- Real Outputs Banner -->
+      <div style="margin-top: 48px; padding: 32px; background: linear-gradient(135deg, rgba(0,255,213,0.05), rgba(251,192,45,0.04)); border: 1px solid rgba(0,255,213,0.15); border-radius: 16px;">
+        <div style="text-align: center; margin-bottom: 24px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; font-weight: 600; margin-bottom: 4px;">REAL OUTPUTS — NOT DIMENSIONLESS</div>
+          <div style="font-size: 20px; font-weight: 700;">Physical Engineering Numbers You Can Act On</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+          <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(0,255,213,0.2); border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 22px; color: #00ffd5; font-weight: 700;">W</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Module Power</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(0,255,136,0.2); border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 22px; color: #00ff88; font-weight: 700;">mA/cm²</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Current Density</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(251,192,45,0.2); border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 22px; color: #fbc02d; font-weight: 700;">°C/s</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Anneal Schedule</div>
+          </div>
+          <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(138,43,226,0.2); border-radius: 12px; padding: 16px; text-align: center;">
+            <div style="font-family: var(--font-mono); font-size: 22px; color: #AB47BC; font-weight: 700;">kWh</div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Annual Energy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: ENGINES
+     ============================================================ -->
+<div class="page" id="page-engines">
+  <section class="section" style="padding-top: 120px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Physics Engines</div>
+        <h2>Three Engines, One Module</h2>
+        <p>Each engine operates independently or as part of the unified pipeline. All grounded in peer-reviewed physics — no black-box ML.</p>
+      </div>
+
+      <!-- ENGINE 1: Optics -->
+      <div style="margin-bottom: 48px;">
+        <div style="padding: 16px 24px; background: linear-gradient(135deg, rgba(0,255,213,0.08), rgba(0,255,213,0.02)); border: 1px solid rgba(0,255,213,0.2); border-radius: 12px; margin-bottom: 20px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #00ffd5; letter-spacing: 2px; font-weight: 600; margin-bottom: 2px;">ENGINE 1</div>
+          <div style="font-size: 18px; font-weight: 700;">🔬 Granas Optics — Mie/TMM/AM1.5G</div>
+          <div style="color: var(--text-muted); font-size: 13px; margin-top: 2px;">Spectral simulation of granular perovskite thin-films with real absorption, reflection, and EQE</div>
+        </div>
+        <div class="products-grid">
+          <div class="product-card" style="--card-accent: #00ffd5;">
+            <div class="product-icon">🌀</div>
+            <div class="product-title" style="color: #00ffd5;">Mie Scattering</div>
+            <div class="product-desc">Full angular Mie theory for spherical granules. Computes Q<sub>sca</sub>, Q<sub>abs</sub>, Q<sub>ext</sub>, and asymmetry factor g(λ). Wavelength-dependent complex refractive index from built-in material library.</div>
+            <div class="product-tags">
+              <span class="tag">Mie</span>
+              <span class="tag">Q<sub>ext</sub></span>
+              <span class="tag">n + ik</span>
+            </div>
+          </div>
+          <div class="product-card" style="--card-accent: #00ff88;">
+            <div class="product-icon">📊</div>
+            <div class="product-title" style="color: #00ff88;">Transfer Matrix (TMM)</div>
+            <div class="product-desc">2×2 characteristic matrix method for multilayer thin-film stacks. Computes R(λ), T(λ), A(λ) across antireflection + active + substrate layers.</div>
+            <div class="product-tags">
+              <span class="tag">TMM</span>
+              <span class="tag">R/T/A</span>
+              <span class="tag">Multilayer</span>
+            </div>
+          </div>
+          <div class="product-card" style="--card-accent: #fbc02d;">
+            <div class="product-icon">☀️</div>
+            <div class="product-title" style="color: #fbc02d;">AM1.5G Integration</div>
+            <div class="product-desc">ASTM G-173 solar spectrum integration for short-circuit current density (J<sub>sc</sub>). Irradiance-weighted absorption and path length enhancement vs. Yablonovitch 4n² limit.</div>
+            <div class="product-tags">
+              <span class="tag">AM1.5G</span>
+              <span class="tag">J<sub>sc</sub></span>
+              <span class="tag">4n²</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENGINE 2: Bayesian -->
+      <div style="margin-bottom: 48px;">
+        <div style="padding: 16px 24px; background: linear-gradient(135deg, rgba(0,209,255,0.08), rgba(0,209,255,0.02)); border: 1px solid rgba(0,209,255,0.2); border-radius: 12px; margin-bottom: 20px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #00d1ff; letter-spacing: 2px; font-weight: 600; margin-bottom: 2px;">ENGINE 2</div>
+          <div style="font-size: 18px; font-weight: 700;">🤖 Bayesian Optimizer — GP + EI</div>
+          <div style="color: var(--text-muted); font-size: 13px; margin-top: 2px;">6D Gaussian Process surrogate model for perovskite ink recipe optimization</div>
+        </div>
+        <div class="products-grid">
+          <div class="product-card" style="--card-accent: #00d1ff;">
+            <div class="product-icon">🧪</div>
+            <div class="product-title" style="color: #00d1ff;">6D Parameter Space</div>
+            <div class="product-desc">Molar concentration (0.8–1.5 M), solvent ratio (DMF:DMSO), spin speed (1–6 kRPM), additive loading (0–5%), anneal temperature (80–200°C), anneal time (5–60 min).</div>
+            <div class="product-tags">
+              <span class="tag">6D</span>
+              <span class="tag">GP</span>
+              <span class="tag">Matérn 5/2</span>
+            </div>
+          </div>
+          <div class="product-card" style="--card-accent: #26C6DA;">
+            <div class="product-icon">📈</div>
+            <div class="product-title" style="color: #26C6DA;">Physics Objective</div>
+            <div class="product-desc">Scherrer grain size, defect density, crystallization kinetics, Shockley-Queisser PCE, and T80 stability score. Multi-objective Pareto optional.</div>
+            <div class="product-tags">
+              <span class="tag">PCE</span>
+              <span class="tag">Grain</span>
+              <span class="tag">T80</span>
+            </div>
+          </div>
+          <div class="product-card" style="--card-accent: #8a2be2;">
+            <div class="product-icon">🔄</div>
+            <div class="product-title" style="color: #8a2be2;">SIBO CLI</div>
+            <div class="product-desc">Stateless --init / --ask / --tell interface for lab hardware integration. Bash-native. Edge-compatible. < 2s inference latency.</div>
+            <div class="product-tags">
+              <span class="tag">CLI</span>
+              <span class="tag">Bash</span>
+              <span class="tag">Edge</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENGINE 3: HJB -->
+      <div>
+        <div style="padding: 16px 24px; background: linear-gradient(135deg, rgba(251,192,45,0.08), rgba(251,192,45,0.02)); border: 1px solid rgba(251,192,45,0.2); border-radius: 12px; margin-bottom: 20px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #fbc02d; letter-spacing: 2px; font-weight: 600; margin-bottom: 2px;">ENGINE 3</div>
+          <div style="font-size: 18px; font-weight: 700;">🧠 HJB Controller — Optimal Annealing</div>
+          <div style="color: var(--text-muted); font-size: 13px; margin-top: 2px;">Hamilton-Jacobi-Bellman dynamic programming for time-optimal annealing schedules</div>
+        </div>
+        <div class="products-grid" style="grid-template-columns: 1fr 1fr;">
+          <div class="product-card" style="--card-accent: #fbc02d;">
+            <div class="product-icon">🧮</div>
+            <div class="product-title" style="color: #fbc02d;">Value Function Solver</div>
+            <div class="product-desc">∂V/∂t + min<sub>u</sub>{ L(x,u) + ∇V · f(x,u) } = 0. State: (grain_size, defect_density, film_temp). Control: temperature ramp rate (°C/s). 25×20×15 grid with 9 control levels.</div>
+            <div class="product-tags">
+              <span class="tag">HJB</span>
+              <span class="tag">DP</span>
+              <span class="tag">3D State</span>
+            </div>
+          </div>
+          <div class="product-card" style="--card-accent: #ff3b5c;">
+            <div class="product-icon">🌡️</div>
+            <div class="product-title" style="color: #ff3b5c;">Trajectory Output</div>
+            <div class="product-desc">Optimal temperature profile (°C vs. time), grain growth curve, defect decay trajectory, and total cost metric. Direct feed for lab furnace controllers.</div>
+            <div class="product-tags">
+              <span class="tag">Trajectory</span>
+              <span class="tag">°C/s</span>
+              <span class="tag">Furnace</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: MODULE OUTPUTS
+     ============================================================ -->
+<div class="page" id="page-outputs">
+  <section class="section" style="padding-top: 120px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Integration-Ready</div>
+        <h2>Module Output Catalog</h2>
+        <p>Every output carries its physical unit. Designed for direct ingestion by SCADA, EMS, and API systems.</p>
+      </div>
+
+      <!-- Summary Banner -->
+      <div style="padding: 28px 32px; background: linear-gradient(135deg, rgba(0,255,213,0.08), rgba(0,255,136,0.06)); border: 1px solid rgba(0,255,213,0.2); border-radius: 16px; margin-bottom: 48px; text-align: center;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--accent-emerald); text-shadow: 0 0 12px var(--glow-emerald);">26</div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px;">Output Fields</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: var(--accent-green); text-shadow: 0 0 12px var(--glow-green);">4</div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px;">Output Blocks</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: #fbc02d;">3</div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px;">Export Formats</div>
+          </div>
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 28px; font-weight: 700; color: #AB47BC;">JSON · CSV · API</div>
+            <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 4px;">Protocols</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Output Block 1: Optics -->
+      <div style="margin-bottom: 36px;">
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #00ffd5; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">🔬 OPTICS BLOCK</div>
+        <table class="output-table">
+          <thead><tr><th>Output</th><th>Unit</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td class="value-cell">jsc_mA_cm2</td><td class="unit-cell">mA/cm²</td><td>Short-circuit current density from AM1.5G EQE integration</td></tr>
+            <tr><td class="value-cell">weighted_absorption_pct</td><td class="unit-cell">%</td><td>AM1.5G irradiance-weighted absorption</td></tr>
+            <tr><td class="value-cell">path_length_enhancement</td><td class="unit-cell">×</td><td>Path length enhancement vs. single-pass</td></tr>
+            <tr><td class="value-cell">yablonovitch_limit</td><td class="unit-cell">×</td><td>Theoretical 4n² limit</td></tr>
+            <tr><td class="value-cell">light_trapping_efficiency</td><td class="unit-cell">0–1</td><td>PLE / Yablonovitch ratio</td></tr>
+            <tr><td class="value-cell">avg_reflectance_pct</td><td class="unit-cell">%</td><td>Broadband average reflectance</td></tr>
+            <tr><td class="value-cell">avg_transmittance_pct</td><td class="unit-cell">%</td><td>Broadband average transmittance</td></tr>
+            <tr><td class="value-cell">n_granules_packed</td><td class="unit-cell">int</td><td>Granules in simulation domain</td></tr>
+            <tr><td class="value-cell">spectral_data</td><td class="unit-cell">dict</td><td>{wavelengths_nm, R, T, A, EQE} arrays</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Output Block 2: Optimization -->
+      <div style="margin-bottom: 36px;">
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #00d1ff; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">🤖 OPTIMIZATION BLOCK</div>
+        <table class="output-table">
+          <thead><tr><th>Output</th><th>Unit</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td class="value-cell">optimal_recipe</td><td class="unit-cell">dict</td><td>Best {molar_conc, solvent_ratio, spin_speed, additive_pct, anneal_temp, anneal_time}</td></tr>
+            <tr><td class="value-cell">predicted_pce_pct</td><td class="unit-cell">%</td><td>Physics-model predicted power conversion efficiency</td></tr>
+            <tr><td class="value-cell">grain_size_nm</td><td class="unit-cell">nm</td><td>Predicted grain diameter from optimal recipe</td></tr>
+            <tr><td class="value-cell">defect_density</td><td class="unit-cell">a.u.</td><td>Predicted defect density</td></tr>
+            <tr><td class="value-cell">stability_score</td><td class="unit-cell">0–1</td><td>T80 lifetime proxy</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Output Block 3: Power -->
+      <div style="margin-bottom: 36px;">
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #00ff88; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">⚡ MODULE POWER BLOCK (REAL WATTS)</div>
+        <table class="output-table">
+          <thead><tr><th>Output</th><th>Unit</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td class="value-cell">module_power_W</td><td class="unit-cell">W</td><td>PCE/100 × area_m² × irradiance</td></tr>
+            <tr><td class="value-cell">module_voc_V</td><td class="unit-cell">V</td><td>Estimated open-circuit voltage from bandgap</td></tr>
+            <tr><td class="value-cell">module_isc_A</td><td class="unit-cell">A</td><td>Jsc × area_cm² / 1000</td></tr>
+            <tr><td class="value-cell">module_fill_factor</td><td class="unit-cell">0–1</td><td>FF = P / (Voc × Isc)</td></tr>
+            <tr><td class="value-cell">annual_energy_kWh</td><td class="unit-cell">kWh</td><td>P × capacity_factor × 8760 / 1000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Output Block 4: HJB -->
+      <div style="margin-bottom: 36px;">
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #fbc02d; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">🧠 HJB CONTROL BLOCK</div>
+        <table class="output-table">
+          <thead><tr><th>Output</th><th>Unit</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td class="value-cell">optimal_anneal_schedule</td><td class="unit-cell">[(s, °C)]</td><td>Time → temperature profile</td></tr>
+            <tr><td class="value-cell">hjb_terminal_grain_nm</td><td class="unit-cell">nm</td><td>Final grain size after optimal anneal</td></tr>
+            <tr><td class="value-cell">hjb_terminal_defects</td><td class="unit-cell">a.u.</td><td>Final defect density</td></tr>
+            <tr><td class="value-cell">hjb_pce_boost_pct</td><td class="unit-cell">%</td><td>ΔPCE from HJB vs. static anneal</td></tr>
+            <tr><td class="value-cell">control_trajectory_C_s</td><td class="unit-cell">°C/s</td><td>Ramp rate sequence</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SCADA Payload Example -->
+      <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; margin-bottom: 12px;">SCADA TELEMETRY PAYLOAD — 14 FIELDS</div>
+        <pre style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 1.8; overflow-x: auto;">{
+  "granas_module_power_W":    3.4322,
+  "granas_module_voc_V":      1.163,
+  "granas_module_isc_A":      2.1522,
+  "granas_module_ff":         0.900,
+  "granas_module_pce_pct":    22.00,
+  "granas_jsc_mA_cm2":        13.80,
+  "granas_absorption_pct":    28.6,
+  "granas_ple_x":             0.3,
+  "granas_grain_nm":          250.0,
+  "granas_defects":           0.0012,
+  "granas_annual_kWh":        6.6145,
+  "granas_panel_cm2":         156.0,
+  "granas_hjb_boost_pct":     0.02,
+  "granas_timestamp":         "2026-03-31T08:55:09"
+}</pre>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: SIMULATOR
+     ============================================================ -->
+<div class="page" id="page-simulator">
+  <section class="section" style="padding-top: 120px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Interactive</div>
+        <h2>Module Power Simulator</h2>
+        <p>Configure panel geometry, PCE, and operating conditions — see real Watts and kWh instantly.</p>
+      </div>
+
+      <div class="demo-container">
+        <div class="demo-controls">
+          <h3>🔬 Module Parameters</h3>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Panel Area</span>
+              <span class="control-value" id="val-area">156 cm²</span>
+            </div>
+            <input type="range" id="slider-area" min="1" max="500" value="156" step="1" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>PCE (%)</span>
+              <span class="control-value" id="val-pce">22.0%</span>
+            </div>
+            <input type="range" id="slider-pce" min="5" max="30" value="22" step="0.5" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Jsc (mA/cm²)</span>
+              <span class="control-value" id="val-jsc">20.0</span>
+            </div>
+            <input type="range" id="slider-jsc" min="5" max="35" value="20" step="0.5" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Irradiance</span>
+              <span class="control-value" id="val-irr">1000 W/m²</span>
+            </div>
+            <input type="range" id="slider-irr" min="200" max="1400" value="1000" step="50" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Capacity Factor</span>
+              <span class="control-value" id="val-cf">0.22 (MX)</span>
+            </div>
+            <input type="range" id="slider-cf" min="10" max="35" value="22" step="1" oninput="updateSim()">
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <span>Bandgap</span>
+              <span class="control-value" id="val-eg">1.55 eV</span>
+            </div>
+            <input type="range" id="slider-eg" min="100" max="250" value="155" step="5" oninput="updateSim()">
+          </div>
+
+          <button class="btn btn-primary demo-run-btn" onclick="updateSim()">
+            ⚡ Calculate
+          </button>
+        </div>
+
+        <div class="demo-results">
+          <h3>📊 Real Module Outputs</h3>
+          <div class="results-grid">
+            <div class="result-metric">
+              <div class="result-metric-label">Module Power</div>
+              <div class="result-metric-value" id="result-power">3.432<span class="result-metric-unit"> W</span></div>
+            </div>
+            <div class="result-metric">
+              <div class="result-metric-label">Open-Circuit Voltage</div>
+              <div class="result-metric-value" id="result-voc">1.163<span class="result-metric-unit"> V</span></div>
+            </div>
+            <div class="result-metric">
+              <div class="result-metric-label">Short-Circuit Current</div>
+              <div class="result-metric-value" id="result-isc">3.120<span class="result-metric-unit"> A</span></div>
+            </div>
+            <div class="result-metric">
+              <div class="result-metric-label">Fill Factor</div>
+              <div class="result-metric-value" id="result-ff">0.847<span class="result-metric-unit"></span></div>
+            </div>
+            <div class="result-metric">
+              <div class="result-metric-label">Annual Energy</div>
+              <div class="result-metric-value" id="result-annual">6.615<span class="result-metric-unit"> kWh</span></div>
+            </div>
+            <div class="result-metric">
+              <div class="result-metric-label">Capacity Factor</div>
+              <div class="result-metric-value" id="result-cf">0.22<span class="result-metric-unit"> MX</span></div>
+            </div>
+          </div>
+
+          <!-- Formulas -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; flex: 1;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 1px; margin-bottom: 12px;">PHYSICS FORMULAS</div>
+            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 2.2;">
+              <div>P = (PCE/100) × (Area/10000 m²) × G</div>
+              <div>V<sub>oc</sub> = E<sub>g</sub> × 0.75</div>
+              <div>I<sub>sc</sub> = J<sub>sc</sub> × Area / 1000</div>
+              <div>FF = P / (V<sub>oc</sub> × I<sub>sc</sub>)</div>
+              <div>E<sub>annual</sub> = P × CF × 8760 / 1000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 13px;">
+        <span class="live-indicator"><span class="live-dot"></span> Client-side physics model</span>
+        &nbsp;·&nbsp; Same formulas as <code style="color: var(--accent-emerald);">granas_module.py</code>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: BLUEPRINT
+     ============================================================ -->
+<div class="page" id="page-blueprint">
+  <section class="section" style="padding-top: 120px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Geometric Engine</div>
+        <h2>Granas Blueprint — 17 × 10.5 cm</h2>
+        <p>The master geometric blueprint defines the panel form factor, triangular CFRP skeleton, and active area partitioning.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
+        <!-- Blueprint Drawing -->
+        <div style="text-align: center;">
+          <div id="blueprint-svg" style="display: inline-block; position: relative;">
+            <canvas id="blueprintCanvas" width="315" height="510" style="border: 2px solid var(--accent-emerald); border-radius: 8px; background: rgba(0,255,213,0.02);"></canvas>
+          </div>
+          <div style="margin-top: 16px; font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);">
+            17 × 10.5 cm · Triangular CFRP Tessellation
+          </div>
+        </div>
+
+        <!-- Specs -->
+        <div>
+          <div style="margin-bottom: 32px;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">PANEL GEOMETRY</div>
+            <table class="output-table">
+              <tbody>
+                <tr><td class="value-cell">Total Width</td><td class="unit-cell">10.5 cm</td></tr>
+                <tr><td class="value-cell">Total Height</td><td class="unit-cell">17.0 cm</td></tr>
+                <tr><td class="value-cell">Total Area</td><td class="unit-cell">178.5 cm²</td></tr>
+                <tr><td class="value-cell">Active Fraction</td><td class="unit-cell">87.4%</td></tr>
+                <tr><td class="value-cell">Active Area</td><td class="unit-cell">156.0 cm²</td></tr>
+                <tr><td class="value-cell">CFRP Skeleton</td><td class="unit-cell">22.5 cm²</td></tr>
+                <tr><td class="value-cell">Segments</td><td class="unit-cell">Triangular tessellation</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">SEGMENT DIMENSIONS</div>
+            <table class="output-table">
+              <tbody>
+                <tr><td class="value-cell">Top/Bottom triangles</td><td class="unit-cell">5.5 + 5.5 cm base</td></tr>
+                <tr><td class="value-cell">Mid-outer diamonds</td><td class="unit-cell">3.5 cm half-width</td></tr>
+                <tr><td class="value-cell">Center diamonds</td><td class="unit-cell">3.0 cm half-width</td></tr>
+                <tr><td class="value-cell">Bottom segment</td><td class="unit-cell">10.5 cm base</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Material Stack -->
+          <div style="margin-top: 32px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 1px; margin-bottom: 12px;">MATERIAL STACK</div>
+            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 2;">
+              <div style="color: var(--accent-emerald);">↕ ETFE Front Encapsulation</div>
+              <div style="color: #00d1ff;">↕ MgF₂ Antireflection (80 nm)</div>
+              <div style="color: #fbc02d;">↕ MAPbI₃ Perovskite Active Layer</div>
+              <div style="color: #ff3b5c;">↕ TOPCon Si Bottom Cell</div>
+              <div style="color: #8a2be2;">↕ CFRP Structural Substrate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     PAGE: CONTACT
+     ============================================================ -->
+<div class="page" id="page-contact">
+  <section class="section" style="padding-top: 120px;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge">Get In Touch</div>
+        <h2>Build the Future of Solar</h2>
+        <p>Whether you need the module API, a custom simulation, or an enterprise deployment — we're ready to help.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h3>PRIMEnergeia S.A.S.</h3>
+          <p>Sovereign clean energy intelligence. Physics-based simulation engines for perovskite solar module design, fabrication optimization, and autonomous lab control.</p>
+
+          <div class="contact-detail">
+            <div class="contact-detail-icon">📧</div>
+            <a href="mailto:cordobaurrutia95@gmail.com">cordobaurrutia95@gmail.com</a>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">🌐</div>
+            <a href="https://github.com/cordiego" target="_blank">github.com/cordiego</a>
+          </div>
+          <div class="contact-detail">
+            <div class="contact-detail-icon">📍</div>
+            <span>Global — 🇲🇽 🇺🇸 🇪🇸 🇵🇹</span>
+          </div>
+
+          <div style="margin-top: 32px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;">
+            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-emerald); margin-bottom: 8px;">LEAD COMPUTATIONAL PHYSICIST</div>
+            <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Diego Córdoba Urrutia</div>
+            <div style="font-size: 13px; color: var(--text-muted);">HJB Control / Energy Systems / Materials Science</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; padding: 36px;">
+          <div style="text-align: center; padding: 48px 24px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🔬</div>
+            <h3 style="color: var(--accent-emerald); margin-bottom: 8px;">Granas Module</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">The unified simulator is open-source and available on GitHub.</p>
+            <a href="https://github.com/cordiego" target="_blank" class="btn btn-primary">View on GitHub →</a>
+            <div style="margin-top: 24px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
+              <div style="margin-bottom: 4px;">pip install granas-module</div>
+              <div style="color: var(--accent-emerald);">v1.0.0 — MIT License</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-logo">🔬 Granas Module</div>
+  <div class="footer-tagline">Perovskite Solar Module Intelligence — PRIMEnergeia S.A.S.</div>
+  <div class="footer-links">
+    <a onclick="showPage('engines')" style="cursor:pointer;">Engines</a>
+    <a onclick="showPage('outputs')" style="cursor:pointer;">Outputs</a>
+    <a onclick="showPage('simulator')" style="cursor:pointer;">Simulator</a>
+    <a onclick="showPage('blueprint')" style="cursor:pointer;">Blueprint</a>
+    <a href="https://github.com/cordiego" target="_blank">GitHub</a>
+  </div>
+  <div class="footer-copy">
+    © 2026 PRIMEnergeia S.A.S. · Diego Córdoba Urrutia · Soberanía Energética Global ⚡🇲🇽
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
