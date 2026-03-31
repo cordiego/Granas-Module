@@ -86,6 +86,8 @@ function updateSim() {
 }
 
 // ── Blueprint Canvas ─────────────────────────────────────
+// Exact reproduction of the hand-drawn 17×10.5 cm Granas Blueprint
+// Tracing from the hand drawing: top V, full-width X, split Xs, center split Xs, mirror
 function drawBlueprint() {
   const canvas = document.getElementById('blueprintCanvas');
   if (!canvas) return;
@@ -93,168 +95,215 @@ function drawBlueprint() {
   const ctx = canvas.getContext('2d');
   const W = canvas.width;
   const H = canvas.height;
-
-  // Clear
   ctx.clearRect(0, 0, W, H);
 
-  // Scale: 10.5 cm → W px, 17 cm → H px
-  const sx = W / 10.5;
-  const sy = H / 17.0;
-  const pad = 10;
+  const pad = 20;
+  const drawW = W - 2 * pad;
+  const drawH = H - 2 * pad;
+  const sx = drawW / 10.5;
+  const sy = drawH / 17.0;
 
-  // Helper: draw a filled triangle with green tint
-  function fillTri(x1, y1, x2, y2, x3, y3, color) {
+  function px(x) { return pad + x * sx; }
+  function py(y) { return pad + y * sy; }
+
+  const g1 = 'rgba(0, 255, 213, 0.07)';
+  const g2 = 'rgba(0, 255, 136, 0.055)';
+  const g3 = 'rgba(0, 200, 150, 0.065)';
+  const g4 = 'rgba(100, 255, 180, 0.06)';
+
+  function fillPoly(points, color) {
     ctx.beginPath();
-    ctx.moveTo(pad + x1 * sx, pad + y1 * sy);
-    ctx.lineTo(pad + x2 * sx, pad + y2 * sy);
-    ctx.lineTo(pad + x3 * sx, pad + y3 * sy);
+    ctx.moveTo(px(points[0][0]), py(points[0][1]));
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(px(points[i][0]), py(points[i][1]));
+    }
     ctx.closePath();
-    ctx.fillStyle = color || 'rgba(0, 255, 213, 0.06)';
+    ctx.fillStyle = color;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(0, 255, 213, 0.4)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
   }
 
-  // Helper: draw line
-  function drawLine(x1, y1, x2, y2, color, width) {
+  // ── ROW 1: Top V — two 5.5 triangles (y:0→2.5) ──
+  fillPoly([[0,0], [5.25,0], [5.25,2.5]], g1);
+  fillPoly([[5.25,0], [10.5,0], [5.25,2.5]], g2);
+
+  // ── ROW 2: Full-width X (y:2.5→5) — labeled 3.5,3.5 ──
+  // Diags: (0,2.5)→(10.5,5) and (10.5,2.5)→(0,5), crossing at (5.25,3.75)
+  fillPoly([[0,2.5], [5.25,2.5], [5.25,3.75]], g3);
+  fillPoly([[5.25,2.5], [10.5,2.5], [5.25,3.75]], g1);
+  fillPoly([[0,2.5], [5.25,3.75], [0,5]], g4);
+  fillPoly([[10.5,2.5], [5.25,3.75], [10.5,5]], g2);
+  fillPoly([[0,5], [5.25,3.75], [5.25,5]], g1);
+  fillPoly([[5.25,5], [5.25,3.75], [10.5,5]], g3);
+
+  // ── ROW 3: Split X with center vertical (y:5→7) — labeled 3.5,3.5 ──
+  // Left X: (0,5)-(5.25,5)-(5.25,7)-(0,7), crossing at (2.625,6)
+  // Right X: (5.25,5)-(10.5,5)-(10.5,7)-(5.25,7), crossing at (7.875,6)
+  fillPoly([[0,5], [5.25,5], [2.625,6]], g2);
+  fillPoly([[0,5], [2.625,6], [0,7]], g3);
+  fillPoly([[5.25,5], [5.25,7], [2.625,6]], g4);
+  fillPoly([[0,7], [2.625,6], [5.25,7]], g1);
+  fillPoly([[5.25,5], [10.5,5], [7.875,6]], g1);
+  fillPoly([[5.25,5], [7.875,6], [5.25,7]], g2);
+  fillPoly([[10.5,5], [10.5,7], [7.875,6]], g3);
+  fillPoly([[5.25,7], [7.875,6], [10.5,7]], g4);
+
+  // ── ROW 4: Center split X (y:7→10) — labeled 3,3 ──
+  // Left X: (0,7)-(5.25,7)-(5.25,10)-(0,10), crossing at (2.625,8.5)
+  // Right X: (5.25,7)-(10.5,7)-(10.5,10)-(5.25,10), crossing at (7.875,8.5)
+  fillPoly([[0,7], [5.25,7], [2.625,8.5]], g3);
+  fillPoly([[0,7], [2.625,8.5], [0,10]], g1);
+  fillPoly([[5.25,7], [5.25,10], [2.625,8.5]], g2);
+  fillPoly([[0,10], [2.625,8.5], [5.25,10]], g4);
+  fillPoly([[5.25,7], [10.5,7], [7.875,8.5]], g4);
+  fillPoly([[5.25,7], [7.875,8.5], [5.25,10]], g1);
+  fillPoly([[10.5,7], [10.5,10], [7.875,8.5]], g2);
+  fillPoly([[5.25,10], [7.875,8.5], [10.5,10]], g3);
+
+  // ── ROW 5: Split X with center vertical (y:10→12) — labeled 3.5,3.5 ──
+  // Mirror of Row 3
+  fillPoly([[0,10], [5.25,10], [2.625,11]], g1);
+  fillPoly([[0,10], [2.625,11], [0,12]], g4);
+  fillPoly([[5.25,10], [5.25,12], [2.625,11]], g3);
+  fillPoly([[0,12], [2.625,11], [5.25,12]], g2);
+  fillPoly([[5.25,10], [10.5,10], [7.875,11]], g2);
+  fillPoly([[5.25,10], [7.875,11], [5.25,12]], g3);
+  fillPoly([[10.5,10], [10.5,12], [7.875,11]], g1);
+  fillPoly([[5.25,12], [7.875,11], [10.5,12]], g4);
+
+  // ── ROW 6: Full-width X (y:12→14.5) — labeled 3.5,3.5 ──
+  // Mirror of Row 2. Crossing at (5.25, 13.25)
+  fillPoly([[0,12], [5.25,12], [5.25,13.25]], g4);
+  fillPoly([[5.25,12], [10.5,12], [5.25,13.25]], g2);
+  fillPoly([[0,12], [5.25,13.25], [0,14.5]], g1);
+  fillPoly([[10.5,12], [5.25,13.25], [10.5,14.5]], g3);
+  fillPoly([[0,14.5], [5.25,13.25], [5.25,14.5]], g3);
+  fillPoly([[5.25,14.5], [5.25,13.25], [10.5,14.5]], g1);
+
+  // ── ROW 7: Bottom Λ — two 5.5 triangles (y:14.5→17) ──
+  fillPoly([[0,14.5], [5.25,17], [0,17]], g2);
+  fillPoly([[10.5,14.5], [5.25,17], [10.5,17]], g1);
+
+  // ═══════════════════════════════════════════════════════
+  //  CFRP SKELETON LINES
+  // ═══════════════════════════════════════════════════════
+  const cfrpColor = 'rgba(0, 255, 213, 0.55)';
+  const cfrpWidth = 2.0;
+
+  function edge(x1, y1, x2, y2) {
     ctx.beginPath();
-    ctx.moveTo(pad + x1 * sx, pad + y1 * sy);
-    ctx.lineTo(pad + x2 * sx, pad + y2 * sy);
-    ctx.strokeStyle = color || 'rgba(0, 255, 213, 0.35)';
-    ctx.lineWidth = width || 1.5;
+    ctx.moveTo(px(x1), py(y1));
+    ctx.lineTo(px(x2), py(y2));
+    ctx.strokeStyle = cfrpColor;
+    ctx.lineWidth = cfrpWidth;
     ctx.stroke();
-  }
-
-  // Helper: label
-  function label(x, y, text, color) {
-    ctx.font = '10px "JetBrains Mono", monospace';
-    ctx.fillStyle = color || 'rgba(0, 255, 213, 0.6)';
-    ctx.textAlign = 'center';
-    ctx.fillText(text, pad + x * sx, pad + y * sy);
   }
 
   // Panel border
-  ctx.strokeStyle = 'rgba(0, 255, 213, 0.6)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(pad, pad, 10.5 * sx, 17 * sy);
+  ctx.strokeStyle = 'rgba(0, 255, 213, 0.7)';
+  ctx.lineWidth = 2.5;
+  ctx.strokeRect(pad, pad, drawW, drawH);
 
-  // Row definitions from the hand-drawn blueprint (top to bottom)
-  // Row 1: Top triangles (5.5 + 5.5)
-  const green1 = 'rgba(0, 255, 213, 0.08)';
-  const green2 = 'rgba(0, 255, 136, 0.06)';
-  const green3 = 'rgba(0, 200, 150, 0.07)';
+  // Horizontal lines
+  edge(0, 2.5,  10.5, 2.5);
+  edge(0, 5,    10.5, 5);
+  edge(0, 7,    10.5, 7);
+  edge(0, 10,   10.5, 10);
+  edge(0, 12,   10.5, 12);
+  edge(0, 14.5, 10.5, 14.5);
 
-  // Top row: two triangles pointing down
-  fillTri(0, 0, 5.25, 2.5, 10.5, 0, green1);
-  drawLine(0, 0, 5.25, 2.5);
-  drawLine(10.5, 0, 5.25, 2.5);
-  label(2.5, 1.2, '5.5', '#fbc02d');
-  label(8.0, 1.2, '5.5', '#fbc02d');
+  // Vertical center — only in split-X rows (3, 4, 5)
+  edge(5.25, 5,  5.25, 7);    // Row 3
+  edge(5.25, 7,  5.25, 10);   // Row 4
+  edge(5.25, 10, 5.25, 12);   // Row 5
 
-  // Row 2: Diamonds at 3.5 cm (y: 2.5 → 5.5)
-  fillTri(0, 2.5, 3.5, 5.0, 0, 5.0, green2);
-  fillTri(0, 2.5, 3.5, 2.5, 3.5, 5.0, green3);
-  fillTri(3.5, 2.5, 7.0, 2.5, 5.25, 5.0, green1);
-  fillTri(3.5, 5.0, 7.0, 5.0, 5.25, 2.5, green2);
-  fillTri(7.0, 2.5, 10.5, 2.5, 10.5, 5.0, green3);
-  fillTri(7.0, 2.5, 7.0, 5.0, 10.5, 5.0, green1);
-  drawLine(0, 2.5, 10.5, 2.5);
-  drawLine(0, 5.0, 10.5, 5.0);
-  drawLine(3.5, 2.5, 3.5, 5.0);
-  drawLine(7.0, 2.5, 7.0, 5.0);
-  drawLine(0, 2.5, 3.5, 5.0);
-  drawLine(3.5, 2.5, 0, 5.0);
-  drawLine(3.5, 2.5, 7.0, 5.0);
-  drawLine(7.0, 2.5, 3.5, 5.0);
-  drawLine(7.0, 2.5, 10.5, 5.0);
-  drawLine(10.5, 2.5, 7.0, 5.0);
-  label(1.5, 3.8, '3.5', '#fbc02d');
-  label(5.25, 3.8, '3.5', '#fbc02d');
-  label(9.0, 3.8, '3.5', '#fbc02d');
+  // Row 1: Top V
+  edge(0, 0,    5.25, 2.5);
+  edge(10.5, 0, 5.25, 2.5);
 
-  // Row 3: Center diamonds at 3 cm (y: 5.0 → 7.5)
-  fillTri(0, 5.0, 3.5, 5.0, 1.75, 7.0, green1);
-  fillTri(0, 7.0, 3.5, 7.0, 1.75, 5.0, green2);
-  fillTri(3.5, 5.0, 7.0, 5.0, 5.25, 7.0, green3);
-  fillTri(3.5, 7.0, 7.0, 7.0, 5.25, 5.0, green1);
-  fillTri(7.0, 5.0, 10.5, 5.0, 8.75, 7.0, green2);
-  fillTri(7.0, 7.0, 10.5, 7.0, 8.75, 5.0, green3);
-  drawLine(0, 7.0, 10.5, 7.0);
-  drawLine(0, 5.0, 1.75, 7.0);
-  drawLine(3.5, 5.0, 1.75, 7.0);
-  drawLine(0, 7.0, 1.75, 5.0);
-  drawLine(3.5, 7.0, 1.75, 5.0);
-  drawLine(3.5, 5.0, 5.25, 7.0);
-  drawLine(7.0, 5.0, 5.25, 7.0);
-  drawLine(3.5, 7.0, 5.25, 5.0);
-  drawLine(7.0, 7.0, 5.25, 5.0);
-  drawLine(7.0, 5.0, 8.75, 7.0);
-  drawLine(10.5, 5.0, 8.75, 7.0);
-  drawLine(7.0, 7.0, 8.75, 5.0);
-  drawLine(10.5, 7.0, 8.75, 5.0);
-  label(1.75, 6.2, '3', '#fbc02d');
-  label(5.25, 6.2, '3', '#fbc02d');
-  label(8.75, 6.2, '3', '#fbc02d');
+  // Row 2: Full-width X (no center vert)
+  edge(0, 2.5,    10.5, 5);
+  edge(10.5, 2.5, 0, 5);
 
-  // Row 4: 3.0 repeat (y: 7.0 → 9.5)
-  fillTri(0, 7.0, 5.25, 9.5, 0, 9.5, green3);
-  fillTri(5.25, 9.5, 10.5, 7.0, 10.5, 9.5, green1);
-  drawLine(0, 9.5, 10.5, 9.5);
-  drawLine(0, 7.0, 5.25, 9.5);
-  drawLine(10.5, 7.0, 5.25, 9.5);
-  label(2.5, 8.5, '3', '#fbc02d');
-  label(8.0, 8.5, '3', '#fbc02d');
+  // Row 3: Split X — left
+  edge(0, 5,      5.25, 7);
+  edge(5.25, 5,   0, 7);
+  // Row 3: Split X — right
+  edge(5.25, 5,   10.5, 7);
+  edge(10.5, 5,   5.25, 7);
 
-  // Row 5: 3.5 diamonds (y: 9.5 → 12.0)
-  fillTri(0, 9.5, 3.5, 9.5, 1.75, 12.0, green2);
-  fillTri(3.5, 9.5, 7.0, 9.5, 5.25, 12.0, green1);
-  fillTri(7.0, 9.5, 10.5, 9.5, 8.75, 12.0, green3);
-  fillTri(0, 12.0, 3.5, 12.0, 1.75, 9.5, green1);
-  fillTri(3.5, 12.0, 7.0, 12.0, 5.25, 9.5, green3);
-  fillTri(7.0, 12.0, 10.5, 12.0, 8.75, 9.5, green2);
-  drawLine(0, 12.0, 10.5, 12.0);
-  drawLine(0, 9.5, 1.75, 12.0);
-  drawLine(3.5, 9.5, 1.75, 12.0);
-  drawLine(3.5, 9.5, 5.25, 12.0);
-  drawLine(7.0, 9.5, 5.25, 12.0);
-  drawLine(7.0, 9.5, 8.75, 12.0);
-  drawLine(10.5, 9.5, 8.75, 12.0);
-  drawLine(0, 12.0, 1.75, 9.5);
-  drawLine(3.5, 12.0, 1.75, 9.5);
-  drawLine(3.5, 12.0, 5.25, 9.5);
-  drawLine(7.0, 12.0, 5.25, 9.5);
-  drawLine(7.0, 12.0, 8.75, 9.5);
-  drawLine(10.5, 12.0, 8.75, 9.5);
-  label(1.75, 11.0, '3.5', '#fbc02d');
-  label(5.25, 11.0, '3.5', '#fbc02d');
-  label(8.75, 11.0, '3.5', '#fbc02d');
+  // Row 4: Split X — left
+  edge(0, 7,      5.25, 10);
+  edge(5.25, 7,   0, 10);
+  // Row 4: Split X — right
+  edge(5.25, 7,   10.5, 10);
+  edge(10.5, 7,   5.25, 10);
 
-  // Row 6: Bottom double triangles (y: 12.0 → 14.5)
-  fillTri(0, 12.0, 5.25, 14.5, 10.5, 12.0, green2);
-  drawLine(0, 12.0, 5.25, 14.5);
-  drawLine(10.5, 12.0, 5.25, 14.5);
-  drawLine(0, 14.5, 10.5, 14.5);
-  label(2.5, 13.5, '5.5', '#fbc02d');
-  label(8.0, 13.5, '5.5', '#fbc02d');
+  // Row 5: Split X — left
+  edge(0, 10,     5.25, 12);
+  edge(5.25, 10,  0, 12);
+  // Row 5: Split X — right
+  edge(5.25, 10,  10.5, 12);
+  edge(10.5, 10,  5.25, 12);
 
-  // Row 7: Bottom triangles pointing up (y: 14.5 → 17)
-  fillTri(0, 14.5, 5.25, 17.0, 0, 17.0, green1);
-  fillTri(10.5, 14.5, 5.25, 17.0, 10.5, 17.0, green3);
-  drawLine(0, 14.5, 5.25, 17.0);
-  drawLine(10.5, 14.5, 5.25, 17.0);
+  // Row 6: Full-width X (no center vert)
+  edge(0, 12,     10.5, 14.5);
+  edge(10.5, 12,  0, 14.5);
+
+  // Row 7: Bottom Λ
+  edge(0, 17,     5.25, 14.5);
+  edge(10.5, 17,  5.25, 14.5);
+
+  // ═══════════════════════════════════════════════════════
+  //  LABELS
+  // ═══════════════════════════════════════════════════════
+  ctx.font = 'bold 11px "JetBrains Mono", monospace';
+
+  function lbl(x, y, text) {
+    ctx.fillStyle = 'rgba(251, 192, 45, 0.85)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, px(x), py(y));
+  }
+
+  lbl(2.3, 1.0, '5.5');   lbl(7.9, 1.0, '5.5');
+  lbl(2.0, 3.5, '3.5');   lbl(7.8, 3.5, '3.5');
+  lbl(2.0, 5.6, '3.5');   lbl(8.0, 5.6, '3.5');
+  lbl(2.2, 8.1, '3');     lbl(7.8, 8.1, '3');
+  lbl(2.0, 10.6, '3');    lbl(8.0, 10.6, '3');
+  lbl(2.0, 13.0, '3.5');  lbl(7.8, 13.0, '3.5');
+  lbl(2.3, 16.0, '5.5');  lbl(7.9, 16.0, '5.5');
 
   // Dimension labels
-  ctx.font = 'bold 12px "JetBrains Mono", monospace';
+  ctx.font = 'bold 13px "JetBrains Mono", monospace';
   ctx.fillStyle = '#00ffd5';
   ctx.textAlign = 'center';
-  ctx.fillText('10.5', W / 2, H - 2);
+  ctx.textBaseline = 'top';
+  ctx.fillText('10.5', W / 2, H - 14);
 
   ctx.save();
-  ctx.translate(8, H / 2);
+  ctx.translate(10, H / 2);
   ctx.rotate(-Math.PI / 2);
+  ctx.textBaseline = 'middle';
   ctx.fillText('17', 0, 0);
   ctx.restore();
+
+  // Vertex dots
+  const vx = 'rgba(0, 255, 213, 0.8)';
+  function dot(x, y) {
+    ctx.beginPath();
+    ctx.arc(px(x), py(y), 3, 0, Math.PI * 2);
+    ctx.fillStyle = vx;
+    ctx.fill();
+  }
+
+  dot(5.25, 2.5);                      // top apex
+  dot(5.25, 3.75);                     // Row 2 crossing
+  dot(2.625, 6);   dot(7.875, 6);     // Row 3 X crossings
+  dot(2.625, 8.5); dot(7.875, 8.5);   // Row 4 X crossings
+  dot(2.625, 11);  dot(7.875, 11);    // Row 5 X crossings
+  dot(5.25, 13.25);                    // Row 6 crossing
+  dot(5.25, 14.5);                     // bottom apex
+  dot(5.25, 6);  dot(5.25, 8.5); dot(5.25, 11); // center vertical
 }
 
 // ── Init ─────────────────────────────────────────────────
