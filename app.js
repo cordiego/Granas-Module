@@ -1,6 +1,7 @@
 /* ============================================================
    Granas Module — Platform JavaScript
    Navigation, Simulator, Blueprint Canvas, Particles
+   21 × 34 cm Production Module — PRIMEnergeia S.A.S.
    ============================================================ */
 
 // ── Page Navigation ──────────────────────────────────────
@@ -34,7 +35,7 @@ function initParticles() {
   const container = document.getElementById('particles');
   if (!container) return;
 
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 50; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
     p.style.left = Math.random() * 100 + '%';
@@ -77,17 +78,18 @@ function updateSim() {
   const annual  = power * cf * 8760 / 1000;
 
   // Update results
-  document.getElementById('result-power').innerHTML  = power.toFixed(4) + '<span class="result-metric-unit"> W</span>';
+  document.getElementById('result-power').innerHTML  = power.toFixed(3) + '<span class="result-metric-unit"> W</span>';
   document.getElementById('result-voc').innerHTML    = voc.toFixed(3) + '<span class="result-metric-unit"> V</span>';
-  document.getElementById('result-isc').innerHTML    = isc.toFixed(4) + '<span class="result-metric-unit"> A</span>';
+  document.getElementById('result-isc').innerHTML    = isc.toFixed(3) + '<span class="result-metric-unit"> A</span>';
   document.getElementById('result-ff').innerHTML     = ff.toFixed(3);
-  document.getElementById('result-annual').innerHTML = annual.toFixed(4) + '<span class="result-metric-unit"> kWh</span>';
+  document.getElementById('result-annual').innerHTML = annual.toFixed(3) + '<span class="result-metric-unit"> kWh</span>';
   document.getElementById('result-cf').innerHTML     = cf.toFixed(2) + '<span class="result-metric-unit">' + (cf >= 0.20 ? ' MX' : '') + '</span>';
 }
 
-// ── Blueprint Canvas ─────────────────────────────────────
-// Exact reproduction of the hand-drawn 17×10.5 cm Granas Blueprint
-// Tracing from the hand drawing: top V, full-width X, split Xs, center split Xs, mirror
+// ── Blueprint Canvas — 21 × 34 cm Production Module ─────
+// Faithful reproduction of the hand-drawn Granas Module blueprint
+// Two columns (10.5 cm each) × 6 rows: V, 4×diamond, Λ
+// ~9 cm triangle sides (top/bottom), ~7 cm diamond sides (middle)
 function drawBlueprint() {
   const canvas = document.getElementById('blueprintCanvas');
   if (!canvas) return;
@@ -97,97 +99,106 @@ function drawBlueprint() {
   const H = canvas.height;
   ctx.clearRect(0, 0, W, H);
 
-  const pad = 20;
+  const pad = 24;
   const drawW = W - 2 * pad;
   const drawH = H - 2 * pad;
-  const sx = drawW / 10.5;
-  const sy = drawH / 17.0;
+  const sx = drawW / 21.0;
+  const sy = drawH / 34.0;
 
   function px(x) { return pad + x * sx; }
   function py(y) { return pad + y * sy; }
 
-  const g1 = 'rgba(0, 255, 213, 0.07)';
-  const g2 = 'rgba(0, 255, 136, 0.055)';
-  const g3 = 'rgba(0, 200, 150, 0.065)';
-  const g4 = 'rgba(100, 255, 180, 0.06)';
+  // ═══════════════════════════════════════════════════════
+  //  21 × 34 cm GEOMETRY
+  //  Y-divisions: 0, 7, 12, 17, 22, 27, 34
+  //  Center vertical at x = 10.5
+  //  Sub-center verticals at x = 5.25 and x = 15.75 (rows 2-5)
+  // ═══════════════════════════════════════════════════════
 
-  function fillPoly(points, color) {
+  // Fill colors — alternating greens for segment differentiation
+  const fills = [
+    'rgba(0, 255, 213, 0.06)',
+    'rgba(0, 255, 136, 0.05)',
+    'rgba(0, 200, 160, 0.055)',
+    'rgba(80, 255, 180, 0.05)',
+    'rgba(0, 230, 190, 0.045)',
+    'rgba(40, 255, 160, 0.055)',
+  ];
+
+  function fillPoly(points, fillIdx) {
     ctx.beginPath();
     ctx.moveTo(px(points[0][0]), py(points[0][1]));
     for (let i = 1; i < points.length; i++) {
       ctx.lineTo(px(points[i][0]), py(points[i][1]));
     }
     ctx.closePath();
-    ctx.fillStyle = color;
+    ctx.fillStyle = fills[fillIdx % fills.length];
     ctx.fill();
   }
 
-  // ── ROW 1: Top V — two 5.5 triangles (y:0→2.5) ──
-  fillPoly([[0,0], [5.25,0], [5.25,2.5]], g1);
-  fillPoly([[5.25,0], [10.5,0], [5.25,2.5]], g2);
+  // Helper: draw X-pattern triangles in a rectangular cell
+  function fillXCell(x0, y0, x1, y1, startFill) {
+    const mx = (x0 + x1) / 2;
+    const my = (y0 + y1) / 2;
+    fillPoly([[x0,y0],[x1,y0],[mx,my]], startFill);      // top
+    fillPoly([[x1,y0],[x1,y1],[mx,my]], startFill + 1);   // right
+    fillPoly([[x1,y1],[x0,y1],[mx,my]], startFill + 2);   // bottom
+    fillPoly([[x0,y1],[x0,y0],[mx,my]], startFill + 3);   // left
+  }
 
-  // ── ROW 2: Full-width X (y:2.5→5) — labeled 3.5,3.5 ──
-  // Diags: (0,2.5)→(10.5,5) and (10.5,2.5)→(0,5), crossing at (5.25,3.75)
-  fillPoly([[0,2.5], [5.25,2.5], [5.25,3.75]], g3);
-  fillPoly([[5.25,2.5], [10.5,2.5], [5.25,3.75]], g1);
-  fillPoly([[0,2.5], [5.25,3.75], [0,5]], g4);
-  fillPoly([[10.5,2.5], [5.25,3.75], [10.5,5]], g2);
-  fillPoly([[0,5], [5.25,3.75], [5.25,5]], g1);
-  fillPoly([[5.25,5], [5.25,3.75], [10.5,5]], g3);
+  // Helper: draw V-pattern (top) in a column
+  function fillVTop(x0, y0, x1, y1, startFill) {
+    const mx = (x0 + x1) / 2;
+    fillPoly([[x0,y0],[mx,y0],[mx,y1]], startFill);       // left triangle
+    fillPoly([[mx,y0],[x1,y0],[mx,y1]], startFill + 1);   // right triangle
+  }
 
-  // ── ROW 3: Split X with center vertical (y:5→7) — labeled 3.5,3.5 ──
-  // Left X: (0,5)-(5.25,5)-(5.25,7)-(0,7), crossing at (2.625,6)
-  // Right X: (5.25,5)-(10.5,5)-(10.5,7)-(5.25,7), crossing at (7.875,6)
-  fillPoly([[0,5], [5.25,5], [2.625,6]], g2);
-  fillPoly([[0,5], [2.625,6], [0,7]], g3);
-  fillPoly([[5.25,5], [5.25,7], [2.625,6]], g4);
-  fillPoly([[0,7], [2.625,6], [5.25,7]], g1);
-  fillPoly([[5.25,5], [10.5,5], [7.875,6]], g1);
-  fillPoly([[5.25,5], [7.875,6], [5.25,7]], g2);
-  fillPoly([[10.5,5], [10.5,7], [7.875,6]], g3);
-  fillPoly([[5.25,7], [7.875,6], [10.5,7]], g4);
+  // Helper: draw Λ-pattern (bottom) in a column
+  function fillVBot(x0, y0, x1, y1, startFill) {
+    const mx = (x0 + x1) / 2;
+    fillPoly([[x0,y1],[mx,y0],[x0,y0]], startFill);       // left triangle (note: y0 is apex)
+    fillPoly([[x1,y1],[mx,y0],[x1,y0]], startFill + 1);   // right triangle
+  }
 
-  // ── ROW 4: Center split X (y:7→10) — labeled 3,3 ──
-  // Left X: (0,7)-(5.25,7)-(5.25,10)-(0,10), crossing at (2.625,8.5)
-  // Right X: (5.25,7)-(10.5,7)-(10.5,10)-(5.25,10), crossing at (7.875,8.5)
-  fillPoly([[0,7], [5.25,7], [2.625,8.5]], g3);
-  fillPoly([[0,7], [2.625,8.5], [0,10]], g1);
-  fillPoly([[5.25,7], [5.25,10], [2.625,8.5]], g2);
-  fillPoly([[0,10], [2.625,8.5], [5.25,10]], g4);
-  fillPoly([[5.25,7], [10.5,7], [7.875,8.5]], g4);
-  fillPoly([[5.25,7], [7.875,8.5], [5.25,10]], g1);
-  fillPoly([[10.5,7], [10.5,10], [7.875,8.5]], g2);
-  fillPoly([[5.25,10], [7.875,8.5], [10.5,10]], g3);
+  // ── ROW 1 (0→7): Top V triangles ──
+  // Left column V
+  fillVTop(0, 0, 10.5, 7, 0);
+  // Right column V
+  fillVTop(10.5, 0, 21, 7, 2);
 
-  // ── ROW 5: Split X with center vertical (y:10→12) — labeled 3.5,3.5 ──
-  // Mirror of Row 3
-  fillPoly([[0,10], [5.25,10], [2.625,11]], g1);
-  fillPoly([[0,10], [2.625,11], [0,12]], g4);
-  fillPoly([[5.25,10], [5.25,12], [2.625,11]], g3);
-  fillPoly([[0,12], [2.625,11], [5.25,12]], g2);
-  fillPoly([[5.25,10], [10.5,10], [7.875,11]], g2);
-  fillPoly([[5.25,10], [7.875,11], [5.25,12]], g3);
-  fillPoly([[10.5,10], [10.5,12], [7.875,11]], g1);
-  fillPoly([[5.25,12], [7.875,11], [10.5,12]], g4);
+  // ── ROW 2 (7→12): Diamond grid ──
+  fillXCell(0, 7, 5.25, 12, 0);
+  fillXCell(5.25, 7, 10.5, 12, 2);
+  fillXCell(10.5, 7, 15.75, 12, 4);
+  fillXCell(15.75, 7, 21, 12, 1);
 
-  // ── ROW 6: Full-width X (y:12→14.5) — labeled 3.5,3.5 ──
-  // Mirror of Row 2. Crossing at (5.25, 13.25)
-  fillPoly([[0,12], [5.25,12], [5.25,13.25]], g4);
-  fillPoly([[5.25,12], [10.5,12], [5.25,13.25]], g2);
-  fillPoly([[0,12], [5.25,13.25], [0,14.5]], g1);
-  fillPoly([[10.5,12], [5.25,13.25], [10.5,14.5]], g3);
-  fillPoly([[0,14.5], [5.25,13.25], [5.25,14.5]], g3);
-  fillPoly([[5.25,14.5], [5.25,13.25], [10.5,14.5]], g1);
+  // ── ROW 3 (12→17): Diamond grid ──
+  fillXCell(0, 12, 5.25, 17, 3);
+  fillXCell(5.25, 12, 10.5, 17, 5);
+  fillXCell(10.5, 12, 15.75, 17, 1);
+  fillXCell(15.75, 12, 21, 17, 3);
 
-  // ── ROW 7: Bottom Λ — two 5.5 triangles (y:14.5→17) ──
-  fillPoly([[0,14.5], [5.25,17], [0,17]], g2);
-  fillPoly([[10.5,14.5], [5.25,17], [10.5,17]], g1);
+  // ── ROW 4 (17→22): Diamond grid ──
+  fillXCell(0, 17, 5.25, 22, 2);
+  fillXCell(5.25, 17, 10.5, 22, 0);
+  fillXCell(10.5, 17, 15.75, 22, 3);
+  fillXCell(15.75, 17, 21, 22, 5);
+
+  // ── ROW 5 (22→27): Diamond grid ──
+  fillXCell(0, 22, 5.25, 27, 5);
+  fillXCell(5.25, 22, 10.5, 27, 3);
+  fillXCell(10.5, 22, 15.75, 27, 0);
+  fillXCell(15.75, 22, 21, 27, 2);
+
+  // ── ROW 6 (27→34): Bottom Λ triangles ──
+  fillVBot(0, 27, 10.5, 34, 4);
+  fillVBot(10.5, 27, 21, 34, 0);
 
   // ═══════════════════════════════════════════════════════
   //  CFRP SKELETON LINES
   // ═══════════════════════════════════════════════════════
   const cfrpColor = 'rgba(0, 255, 213, 0.55)';
-  const cfrpWidth = 2.0;
+  const cfrpWidth = 1.8;
 
   function edge(x1, y1, x2, y2) {
     ctx.beginPath();
@@ -203,107 +214,142 @@ function drawBlueprint() {
   ctx.lineWidth = 2.5;
   ctx.strokeRect(pad, pad, drawW, drawH);
 
-  // Horizontal lines
-  edge(0, 2.5,  10.5, 2.5);
-  edge(0, 5,    10.5, 5);
-  edge(0, 7,    10.5, 7);
-  edge(0, 10,   10.5, 10);
-  edge(0, 12,   10.5, 12);
-  edge(0, 14.5, 10.5, 14.5);
+  // ── Horizontal lines ──
+  [7, 12, 17, 22, 27].forEach(y => edge(0, y, 21, y));
 
-  // Vertical center — only in split-X rows (3, 4, 5)
-  edge(5.25, 5,  5.25, 7);    // Row 3
-  edge(5.25, 7,  5.25, 10);   // Row 4
-  edge(5.25, 10, 5.25, 12);   // Row 5
+  // ── Center vertical (full height) ──
+  edge(10.5, 0, 10.5, 34);
 
-  // Row 1: Top V
-  edge(0, 0,    5.25, 2.5);
-  edge(10.5, 0, 5.25, 2.5);
+  // ── Sub-center verticals (rows 2-5 only) ──
+  edge(5.25, 7, 5.25, 27);
+  edge(15.75, 7, 15.75, 27);
 
-  // Row 2: Full-width X (no center vert)
-  edge(0, 2.5,    10.5, 5);
-  edge(10.5, 2.5, 0, 5);
+  // ── Row 1: Top V diagonals ──
+  // Left column
+  edge(0, 0, 5.25, 7);
+  edge(10.5, 0, 5.25, 7);
+  // Right column
+  edge(10.5, 0, 15.75, 7);
+  edge(21, 0, 15.75, 7);
 
-  // Row 3: Split X — left
-  edge(0, 5,      5.25, 7);
-  edge(5.25, 5,   0, 7);
-  // Row 3: Split X — right
-  edge(5.25, 5,   10.5, 7);
-  edge(10.5, 5,   5.25, 7);
+  // ── Rows 2-5: X diagonals in each sub-cell ──
+  const yCells = [[7,12],[12,17],[17,22],[22,27]];
+  const xCells = [[0,5.25],[5.25,10.5],[10.5,15.75],[15.75,21]];
 
-  // Row 4: Split X — left
-  edge(0, 7,      5.25, 10);
-  edge(5.25, 7,   0, 10);
-  // Row 4: Split X — right
-  edge(5.25, 7,   10.5, 10);
-  edge(10.5, 7,   5.25, 10);
+  yCells.forEach(([y0, y1]) => {
+    xCells.forEach(([x0, x1]) => {
+      edge(x0, y0, x1, y1);  // diagonal ↘
+      edge(x1, y0, x0, y1);  // diagonal ↙
+    });
+  });
 
-  // Row 5: Split X — left
-  edge(0, 10,     5.25, 12);
-  edge(5.25, 10,  0, 12);
-  // Row 5: Split X — right
-  edge(5.25, 10,  10.5, 12);
-  edge(10.5, 10,  5.25, 12);
-
-  // Row 6: Full-width X (no center vert)
-  edge(0, 12,     10.5, 14.5);
-  edge(10.5, 12,  0, 14.5);
-
-  // Row 7: Bottom Λ
-  edge(0, 17,     5.25, 14.5);
-  edge(10.5, 17,  5.25, 14.5);
+  // ── Row 6: Bottom Λ diagonals ──
+  // Left column
+  edge(0, 34, 5.25, 27);
+  edge(10.5, 34, 5.25, 27);
+  // Right column
+  edge(10.5, 34, 15.75, 27);
+  edge(21, 34, 15.75, 27);
 
   // ═══════════════════════════════════════════════════════
-  //  LABELS
+  //  SEGMENT LABELS
   // ═══════════════════════════════════════════════════════
-  ctx.font = 'bold 11px "JetBrains Mono", monospace';
+  ctx.font = 'bold 10px "JetBrains Mono", monospace';
 
-  function lbl(x, y, text) {
-    ctx.fillStyle = 'rgba(251, 192, 45, 0.85)';
+  function lbl(x, y, text, color) {
+    ctx.fillStyle = color || 'rgba(251, 192, 45, 0.85)';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, px(x), py(y));
   }
 
-  lbl(2.3, 1.0, '5.5');   lbl(7.9, 1.0, '5.5');
-  lbl(2.0, 3.5, '3.5');   lbl(7.8, 3.5, '3.5');
-  lbl(2.0, 5.6, '3.5');   lbl(8.0, 5.6, '3.5');
-  lbl(2.2, 8.1, '3');     lbl(7.8, 8.1, '3');
-  lbl(2.0, 10.6, '3');    lbl(8.0, 10.6, '3');
-  lbl(2.0, 13.0, '3.5');  lbl(7.8, 13.0, '3.5');
-  lbl(2.3, 16.0, '5.5');  lbl(7.9, 16.0, '5.5');
+  // Row 1 top V — ~9cm labels
+  lbl(2.0, 2.8, '~9', 'rgba(251, 192, 45, 0.7)');
+  lbl(7.5, 2.8, '~9', 'rgba(251, 192, 45, 0.7)');
+  lbl(13.0, 2.8, '~9', 'rgba(251, 192, 45, 0.7)');
+  lbl(18.5, 2.8, '~9', 'rgba(251, 192, 45, 0.7)');
 
-  // Dimension labels
+  // Rows 2-5 diamond — ~7cm labels (sample key cells)
+  lbl(1.5, 9.0, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(3.8, 9.0, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(6.5, 9.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(9.2, 9.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(12.0, 9.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(14.5, 9.0, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(17.0, 9.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(19.5, 9.0, '~7', 'rgba(251, 192, 45, 0.55)');
+
+  // More ~7 labels in middle rows
+  lbl(1.5, 14.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(3.8, 14.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(12.0, 14.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(19.5, 14.5, '~7', 'rgba(251, 192, 45, 0.55)');
+
+  lbl(6.5, 19.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(9.2, 19.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(17.0, 19.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(14.5, 19.5, '~7', 'rgba(251, 192, 45, 0.55)');
+
+  lbl(1.5, 24.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(3.8, 24.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(17.0, 24.5, '~7', 'rgba(251, 192, 45, 0.55)');
+  lbl(19.5, 24.5, '~7', 'rgba(251, 192, 45, 0.55)');
+
+  // Row 6 bottom Λ — ~9cm labels
+  lbl(2.0, 31.5, '~9', 'rgba(251, 192, 45, 0.7)');
+  lbl(7.5, 31.5, '~9', 'rgba(251, 192, 45, 0.7)');
+  lbl(13.0, 31.5, '~9', 'rgba(251, 192, 45, 0.7)');
+  lbl(18.5, 31.5, '~9', 'rgba(251, 192, 45, 0.7)');
+
+  // ── Dimension labels ──
   ctx.font = 'bold 13px "JetBrains Mono", monospace';
   ctx.fillStyle = '#00ffd5';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
-  ctx.fillText('10.5', W / 2, H - 14);
+  ctx.fillText('21 cm', W / 2, H - 16);
 
   ctx.save();
-  ctx.translate(10, H / 2);
+  ctx.translate(12, H / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textBaseline = 'middle';
-  ctx.fillText('17', 0, 0);
+  ctx.fillText('34 cm', 0, 0);
   ctx.restore();
 
-  // Vertex dots
-  const vx = 'rgba(0, 255, 213, 0.8)';
-  function dot(x, y) {
+  // ── Vertex dots ──
+  const dotColor = 'rgba(0, 255, 213, 0.75)';
+  function dot(x, y, r) {
     ctx.beginPath();
-    ctx.arc(px(x), py(y), 3, 0, Math.PI * 2);
-    ctx.fillStyle = vx;
+    ctx.arc(px(x), py(y), r || 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = dotColor;
     ctx.fill();
   }
 
-  dot(5.25, 2.5);                      // top apex
-  dot(5.25, 3.75);                     // Row 2 crossing
-  dot(2.625, 6);   dot(7.875, 6);     // Row 3 X crossings
-  dot(2.625, 8.5); dot(7.875, 8.5);   // Row 4 X crossings
-  dot(2.625, 11);  dot(7.875, 11);    // Row 5 X crossings
-  dot(5.25, 13.25);                    // Row 6 crossing
-  dot(5.25, 14.5);                     // bottom apex
-  dot(5.25, 6);  dot(5.25, 8.5); dot(5.25, 11); // center vertical
+  // Top V apexes
+  dot(5.25, 7, 3);
+  dot(15.75, 7, 3);
+
+  // Bottom Λ apexes
+  dot(5.25, 27, 3);
+  dot(15.75, 27, 3);
+
+  // X-crossing centers in rows 2-5
+  yCells.forEach(([y0, y1]) => {
+    const my = (y0 + y1) / 2;
+    xCells.forEach(([x0, x1]) => {
+      dot((x0 + x1) / 2, my);
+    });
+  });
+
+  // Sub-center vertical intersections with horizontal lines
+  [7, 12, 17, 22, 27].forEach(y => {
+    dot(5.25, y);
+    dot(15.75, y);
+  });
+
+  // Center vertical intersections
+  [0, 7, 12, 17, 22, 27, 34].forEach(y => {
+    dot(10.5, y, 3);
+  });
 }
 
 // ── Init ─────────────────────────────────────────────────

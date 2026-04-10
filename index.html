@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Granas Module — Perovskite Solar Intelligence</title>
-  <meta name="description" content="Unified perovskite solar module simulator. Mie/TMM optics, Bayesian optimization, and HJB control — real physical inputs, real engineering outputs in Watts, mA/cm², nm, °C/s.">
+  <meta name="description" content="21 × 34 cm perovskite solar module simulator. Mie/TMM optics, Bayesian optimization, and HJB control — real physical inputs, real engineering outputs in Watts, mA/cm², nm, °C/s.">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
 </head>
@@ -38,9 +38,9 @@
     <div class="hero-bg"></div>
     <div class="hero-particles" id="particles"></div>
     <div class="hero-content">
-      <div class="hero-badge">Perovskite Solar Module Intelligence</div>
+      <div class="hero-badge">21 × 34 cm Production Module</div>
       <h1>From Photons to Watts. One Pipeline.</h1>
-      <p>Granas Module connects <strong>Mie/TMM optics</strong>, <strong>Bayesian ink optimization</strong>, and <strong>HJB annealing control</strong> into a single orchestrator — outputting real Watts, mA/cm², and kWh from the 17×10.5 cm Granas Blueprint geometry.</p>
+      <p>Granas Module connects <strong>Mie/TMM optics</strong>, <strong>Bayesian ink optimization</strong>, and <strong>HJB annealing control</strong> into a single orchestrator — outputting real Watts, mA/cm², and kWh from the 21 × 34 cm Granas Blueprint geometry.</p>
       <div class="hero-cta-group">
         <a class="btn btn-primary" onclick="showPage('simulator')">Run Simulator →</a>
         <a class="btn btn-secondary" onclick="showPage('engines')">View Engines</a>
@@ -51,7 +51,7 @@
           <div class="hero-stat-label">Physics Engines</div>
         </div>
         <div>
-          <div class="hero-stat-value">156 cm²</div>
+          <div class="hero-stat-value">624 cm²</div>
           <div class="hero-stat-label">Blueprint Active Area</div>
         </div>
         <div>
@@ -59,7 +59,7 @@
           <div class="hero-stat-label">Target PCE</div>
         </div>
         <div>
-          <div class="hero-stat-value">6.6 kWh</div>
+          <div class="hero-stat-value">26.5 kWh</div>
           <div class="hero-stat-label">Annual Energy</div>
         </div>
       </div>
@@ -124,6 +124,26 @@
           <div style="background: rgba(0,0,0,0.2); border: 1px solid rgba(138,43,226,0.2); border-radius: 12px; padding: 16px; text-align: center;">
             <div style="font-family: var(--font-mono); font-size: 22px; color: #AB47BC; font-weight: 700;">kWh</div>
             <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Annual Energy</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scale-up Comparison -->
+      <div style="margin-top: 32px; padding: 28px; background: linear-gradient(135deg, rgba(251,192,45,0.06), rgba(0,255,213,0.04)); border: 1px solid rgba(251,192,45,0.15); border-radius: 16px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-gold); letter-spacing: 2px; font-weight: 600;">PRODUCTION SCALE-UP — 4× SUB-MODULE TILING</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center;">
+          <div style="text-align: center; padding: 16px; background: rgba(0,0,0,0.15); border: 1px solid var(--border); border-radius: 12px;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px;">SUB-MODULE</div>
+            <div style="font-family: var(--font-mono); font-size: 20px; color: var(--text-secondary); font-weight: 700;">10.5 × 17 cm</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">156 cm² active · 3.43 W</div>
+          </div>
+          <div style="font-size: 28px; color: var(--accent-gold);">→</div>
+          <div style="text-align: center; padding: 16px; background: rgba(0,255,213,0.05); border: 1px solid rgba(0,255,213,0.25); border-radius: 12px;">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 1px; margin-bottom: 8px;">PRODUCTION MODULE</div>
+            <div style="font-family: var(--font-mono); font-size: 20px; color: var(--accent-emerald); font-weight: 700; text-shadow: 0 0 12px var(--glow-emerald);">21 × 34 cm</div>
+            <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">624 cm² active · 13.73 W</div>
           </div>
         </div>
       </div>
@@ -329,11 +349,11 @@
 
       <!-- Output Block 3: Power -->
       <div style="margin-bottom: 36px;">
-        <div style="font-family: var(--font-mono); font-size: 12px; color: #00ff88; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">⚡ MODULE POWER BLOCK (REAL WATTS)</div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: #00ff88; letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">⚡ MODULE POWER BLOCK (REAL WATTS) — 21 × 34 cm</div>
         <table class="output-table">
           <thead><tr><th>Output</th><th>Unit</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td class="value-cell">module_power_W</td><td class="unit-cell">W</td><td>PCE/100 × area_m² × irradiance</td></tr>
+            <tr><td class="value-cell">module_power_W</td><td class="unit-cell">W</td><td>PCE/100 × area_m² × irradiance (624 cm² active)</td></tr>
             <tr><td class="value-cell">module_voc_V</td><td class="unit-cell">V</td><td>Estimated open-circuit voltage from bandgap</td></tr>
             <tr><td class="value-cell">module_isc_A</td><td class="unit-cell">A</td><td>Jsc × area_cm² / 1000</td></tr>
             <tr><td class="value-cell">module_fill_factor</td><td class="unit-cell">0–1</td><td>FF = P / (Voc × Isc)</td></tr>
@@ -359,22 +379,22 @@
 
       <!-- SCADA Payload Example -->
       <div style="padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;">
-        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; margin-bottom: 12px;">SCADA TELEMETRY PAYLOAD — 14 FIELDS</div>
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; margin-bottom: 12px;">SCADA TELEMETRY PAYLOAD — 21 × 34 cm MODULE — 14 FIELDS</div>
         <pre style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 1.8; overflow-x: auto;">{
-  "granas_module_power_W":    3.4322,
+  "granas_module_power_W":    13.728,
   "granas_module_voc_V":      1.163,
-  "granas_module_isc_A":      2.1522,
+  "granas_module_isc_A":      12.480,
   "granas_module_ff":         0.900,
   "granas_module_pce_pct":    22.00,
-  "granas_jsc_mA_cm2":        13.80,
+  "granas_jsc_mA_cm2":        20.00,
   "granas_absorption_pct":    28.6,
   "granas_ple_x":             0.3,
   "granas_grain_nm":          250.0,
   "granas_defects":           0.0012,
-  "granas_annual_kWh":        6.6145,
-  "granas_panel_cm2":         156.0,
+  "granas_annual_kWh":        26.458,
+  "granas_panel_cm2":         624.0,
   "granas_hjb_boost_pct":     0.02,
-  "granas_timestamp":         "2026-03-31T08:55:09"
+  "granas_timestamp":         "2026-04-08T17:34:00"
 }</pre>
       </div>
     </div>
@@ -390,7 +410,7 @@
       <div class="section-header">
         <div class="section-badge">Interactive</div>
         <h2>Module Power Simulator</h2>
-        <p>Configure panel geometry, PCE, and operating conditions — see real Watts and kWh instantly.</p>
+        <p>Configure the 21 × 34 cm production module geometry, PCE, and operating conditions — see real Watts and kWh instantly.</p>
       </div>
 
       <div class="demo-container">
@@ -400,9 +420,9 @@
           <div class="control-group">
             <div class="control-label">
               <span>Panel Area</span>
-              <span class="control-value" id="val-area">156 cm²</span>
+              <span class="control-value" id="val-area">624 cm²</span>
             </div>
-            <input type="range" id="slider-area" min="1" max="500" value="156" step="1" oninput="updateSim()">
+            <input type="range" id="slider-area" min="1" max="1000" value="624" step="1" oninput="updateSim()">
           </div>
 
           <div class="control-group">
@@ -451,11 +471,11 @@
         </div>
 
         <div class="demo-results">
-          <h3>📊 Real Module Outputs</h3>
+          <h3>📊 Real Module Outputs — 21 × 34 cm</h3>
           <div class="results-grid">
             <div class="result-metric">
               <div class="result-metric-label">Module Power</div>
-              <div class="result-metric-value" id="result-power">3.432<span class="result-metric-unit"> W</span></div>
+              <div class="result-metric-value" id="result-power">13.728<span class="result-metric-unit"> W</span></div>
             </div>
             <div class="result-metric">
               <div class="result-metric-label">Open-Circuit Voltage</div>
@@ -463,15 +483,15 @@
             </div>
             <div class="result-metric">
               <div class="result-metric-label">Short-Circuit Current</div>
-              <div class="result-metric-value" id="result-isc">3.120<span class="result-metric-unit"> A</span></div>
+              <div class="result-metric-value" id="result-isc">12.480<span class="result-metric-unit"> A</span></div>
             </div>
             <div class="result-metric">
               <div class="result-metric-label">Fill Factor</div>
-              <div class="result-metric-value" id="result-ff">0.847<span class="result-metric-unit"></span></div>
+              <div class="result-metric-value" id="result-ff">0.900</div>
             </div>
             <div class="result-metric">
               <div class="result-metric-label">Annual Energy</div>
-              <div class="result-metric-value" id="result-annual">6.615<span class="result-metric-unit"> kWh</span></div>
+              <div class="result-metric-value" id="result-annual">26.458<span class="result-metric-unit"> kWh</span></div>
             </div>
             <div class="result-metric">
               <div class="result-metric-label">Capacity Factor</div>
@@ -481,7 +501,7 @@
 
           <!-- Formulas -->
           <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; flex: 1;">
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 1px; margin-bottom: 12px;">PHYSICS FORMULAS</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 1px; margin-bottom: 12px;">PHYSICS FORMULAS — 21 × 34 cm MODULE</div>
             <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 2.2;">
               <div>P = (PCE/100) × (Area/10000 m²) × G</div>
               <div>V<sub>oc</sub> = E<sub>g</sub> × 0.75</div>
@@ -496,6 +516,7 @@
       <div style="text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 13px;">
         <span class="live-indicator"><span class="live-dot"></span> Client-side physics model</span>
         &nbsp;·&nbsp; Same formulas as <code style="color: var(--accent-emerald);">granas_module.py</code>
+        &nbsp;·&nbsp; <span style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 11px;">21 × 34 cm PRODUCTION MODULE</span>
       </div>
     </div>
   </section>
@@ -508,53 +529,57 @@
   <section class="section" style="padding-top: 120px;">
     <div class="container">
       <div class="section-header">
-        <div class="section-badge">Geometric Engine</div>
-        <h2>Granas Blueprint — 17 × 10.5 cm</h2>
-        <p>The master geometric blueprint defines the panel form factor, triangular CFRP skeleton, and active area partitioning.</p>
+        <div class="section-badge">Geometric Engine — Production Scale</div>
+        <h2>Granas Blueprint — 21 × 34 cm</h2>
+        <p>The production-scale geometric blueprint tiles two columns of CFRP triangular tessellation across 624 cm² of active perovskite area.</p>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;">
         <!-- Blueprint Drawing -->
         <div style="text-align: center;">
           <div id="blueprint-svg" style="display: inline-block; position: relative;">
-            <canvas id="blueprintCanvas" width="315" height="510" style="border: 2px solid var(--accent-emerald); border-radius: 8px; background: rgba(0,255,213,0.02);"></canvas>
+            <canvas id="blueprintCanvas" width="378" height="612" style="border: 2px solid var(--accent-emerald); border-radius: 8px; background: rgba(0,255,213,0.02);"></canvas>
           </div>
           <div style="margin-top: 16px; font-family: var(--font-mono); font-size: 13px; color: var(--text-muted);">
-            17 × 10.5 cm · Triangular CFRP Tessellation
+            21 × 34 cm · 2-Column CFRP Tessellation · 4 Sub-Modules
           </div>
         </div>
 
         <!-- Specs -->
         <div>
           <div style="margin-bottom: 32px;">
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">PANEL GEOMETRY</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">PANEL GEOMETRY — PRODUCTION MODULE</div>
             <table class="output-table">
               <tbody>
-                <tr><td class="value-cell">Total Width</td><td class="unit-cell">10.5 cm</td></tr>
-                <tr><td class="value-cell">Total Height</td><td class="unit-cell">17.0 cm</td></tr>
-                <tr><td class="value-cell">Total Area</td><td class="unit-cell">178.5 cm²</td></tr>
+                <tr><td class="value-cell">Total Width</td><td class="unit-cell">21.0 cm</td></tr>
+                <tr><td class="value-cell">Total Height</td><td class="unit-cell">34.0 cm</td></tr>
+                <tr><td class="value-cell">Total Area</td><td class="unit-cell">714.0 cm²</td></tr>
                 <tr><td class="value-cell">Active Fraction</td><td class="unit-cell">87.4%</td></tr>
-                <tr><td class="value-cell">Active Area</td><td class="unit-cell">156.0 cm²</td></tr>
-                <tr><td class="value-cell">CFRP Skeleton</td><td class="unit-cell">22.5 cm²</td></tr>
-                <tr><td class="value-cell">Segments</td><td class="unit-cell">Triangular tessellation</td></tr>
+                <tr><td class="value-cell">Active Area</td><td class="unit-cell">624.0 cm²</td></tr>
+                <tr><td class="value-cell">CFRP Skeleton</td><td class="unit-cell">90.0 cm²</td></tr>
+                <tr><td class="value-cell">Columns</td><td class="unit-cell">2 (10.5 cm each)</td></tr>
+                <tr><td class="value-cell">Tessellation Rows</td><td class="unit-cell">6 per column</td></tr>
+                <tr><td class="value-cell">Triangle Segments</td><td class="unit-cell">~72 active cells</td></tr>
               </tbody>
             </table>
           </div>
 
-          <div>
+          <div style="margin-bottom: 32px;">
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 16px; font-weight: 600;">SEGMENT DIMENSIONS</div>
             <table class="output-table">
               <tbody>
-                <tr><td class="value-cell">Top/Bottom triangles</td><td class="unit-cell">5.5 + 5.5 cm base</td></tr>
-                <tr><td class="value-cell">Mid-outer diamonds</td><td class="unit-cell">3.5 cm half-width</td></tr>
-                <tr><td class="value-cell">Center diamonds</td><td class="unit-cell">3.0 cm half-width</td></tr>
-                <tr><td class="value-cell">Bottom segment</td><td class="unit-cell">10.5 cm base</td></tr>
+                <tr><td class="value-cell">Top/Bottom V triangles</td><td class="unit-cell">~9 cm sides</td></tr>
+                <tr><td class="value-cell">Middle diamond cells</td><td class="unit-cell">~7 cm sides</td></tr>
+                <tr><td class="value-cell">Column width</td><td class="unit-cell">10.5 cm</td></tr>
+                <tr><td class="value-cell">Sub-center width</td><td class="unit-cell">5.25 cm</td></tr>
+                <tr><td class="value-cell">Top/Bottom row height</td><td class="unit-cell">7.0 cm</td></tr>
+                <tr><td class="value-cell">Diamond row height</td><td class="unit-cell">5.0 cm</td></tr>
               </tbody>
             </table>
           </div>
 
           <!-- Material Stack -->
-          <div style="margin-top: 32px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;">
+          <div style="padding: 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;">
             <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald); letter-spacing: 1px; margin-bottom: 12px;">MATERIAL STACK</div>
             <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); line-height: 2;">
               <div style="color: var(--accent-emerald);">↕ ETFE Front Encapsulation</div>
@@ -611,11 +636,12 @@
           <div style="text-align: center; padding: 48px 24px;">
             <div style="font-size: 48px; margin-bottom: 16px;">🔬</div>
             <h3 style="color: var(--accent-emerald); margin-bottom: 8px;">Granas Module</h3>
-            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">The unified simulator is open-source and available on GitHub.</p>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 8px;">21 × 34 cm Production Module</p>
+            <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">The unified simulator is open-source and available on GitHub.</p>
             <a href="https://github.com/cordiego" target="_blank" class="btn btn-primary">View on GitHub →</a>
             <div style="margin-top: 24px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
               <div style="margin-bottom: 4px;">pip install granas-module</div>
-              <div style="color: var(--accent-emerald);">v1.0.0 — MIT License</div>
+              <div style="color: var(--accent-emerald);">v2.0.0 — MIT License</div>
             </div>
           </div>
         </div>
@@ -629,7 +655,7 @@
      ============================================================ -->
 <footer class="footer">
   <div class="footer-logo">🔬 Granas Module</div>
-  <div class="footer-tagline">Perovskite Solar Module Intelligence — PRIMEnergeia S.A.S.</div>
+  <div class="footer-tagline">21 × 34 cm Perovskite Solar Module Intelligence — PRIMEnergeia S.A.S.</div>
   <div class="footer-links">
     <a onclick="showPage('engines')" style="cursor:pointer;">Engines</a>
     <a onclick="showPage('outputs')" style="cursor:pointer;">Outputs</a>
