@@ -267,8 +267,9 @@ class GranasProductionModule:
         )
 
         # ── Module Weight ────────────────────────────────────
-        # CFRP + perovskite/Si tandem: ~2.5 kg/m² (vs glass ~12 kg/m²)
-        self.weight_kg = 2.5 * self.total_area_m2
+        # Full stack: CFRP + perovskite/Si + ETFE + encapsulant: ~5.0 kg/m²
+        # (vs glass ~12 kg/m² → 2.4× lighter)
+        self.weight_kg = 5.0 * self.total_area_m2
 
         return self
 

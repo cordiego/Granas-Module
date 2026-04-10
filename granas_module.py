@@ -13,9 +13,9 @@ Pipeline:
   4. Power    → PCE × Area × Irradiance → Watts, kWh
 
 Granas Blueprint Geometry:
-  Panel:  17 × 10.5 cm  (178.5 cm² total)
-  Active: ~156 cm² after CFRP skeleton
-  Segments: Triangular tessellation (see Blueprint)
+  Sub-cell: 21 × 34 cm  (714 cm² total, 624 cm² active)
+  Module:   2.1 × 3.4 m (7.14 m² total, 6.24 m² active)
+  Config:   100 sub-cells (10×10), 50S × 2P
 
 Author: Diego Córdoba Urrutia — PRIMEnergeia S.A.S.
 """
@@ -43,12 +43,12 @@ logger = logging.getLogger(__name__)
 # ─────────────────────────────────────────────────────────────
 MODULE_VERSION = "1.0.0"
 
-# Granas Blueprint Geometry (17 × 10.5 cm panel)
-BLUEPRINT_WIDTH_CM = 10.5
-BLUEPRINT_HEIGHT_CM = 17.0
-BLUEPRINT_TOTAL_AREA_CM2 = BLUEPRINT_WIDTH_CM * BLUEPRINT_HEIGHT_CM  # 178.5 cm²
+# Granas Blueprint Geometry (21 × 34 cm sub-cell / 2.1 × 3.4 m module)
+BLUEPRINT_WIDTH_CM = 21.0
+BLUEPRINT_HEIGHT_CM = 34.0
+BLUEPRINT_TOTAL_AREA_CM2 = BLUEPRINT_WIDTH_CM * BLUEPRINT_HEIGHT_CM  # 714 cm²
 BLUEPRINT_ACTIVE_FRACTION = 0.874  # ~87.4% active area (CFRP skeleton takes ~12.6%)
-BLUEPRINT_ACTIVE_AREA_CM2 = BLUEPRINT_TOTAL_AREA_CM2 * BLUEPRINT_ACTIVE_FRACTION  # ~156 cm²
+BLUEPRINT_ACTIVE_AREA_CM2 = BLUEPRINT_TOTAL_AREA_CM2 * BLUEPRINT_ACTIVE_FRACTION  # ~624 cm²
 
 # Solar capacity factors
 CAPACITY_FACTOR_MEXICO = 0.22   # Mexico average
@@ -76,7 +76,7 @@ class GranasModuleInput:
     """
     # ── Device Geometry ──────────────────────────────────────
     panel_area_cm2: float = BLUEPRINT_ACTIVE_AREA_CM2
-    """Active panel area (cm²). Default: Granas Blueprint 17×10.5 active area ~156 cm²."""
+    """Active panel area (cm²). Default: Granas Blueprint 21×34 sub-cell active area ~624 cm²."""
 
     # ── Optics Parameters ────────────────────────────────────
     granule_material: str = "MAPbI3"
@@ -300,7 +300,7 @@ class GranasModule:
 
     Usage:
         module = GranasModule()
-        inputs = GranasModuleInput(panel_area_cm2=156.0)
+        inputs = GranasModuleInput(panel_area_cm2=624.0)
         output = module.run(inputs)
         print(f"Power: {output.module_power_W:.2f} W")
         print(module.to_json(output))
@@ -761,7 +761,7 @@ if __name__ == "__main__":
 
     # Default inputs: Granas Blueprint panel, Mexico capacity factor
     inputs = GranasModuleInput(
-        simulation_name="Granas_Blueprint_17x10.5",
+        simulation_name="Granas_Blueprint_21x34",
         panel_area_cm2=BLUEPRINT_ACTIVE_AREA_CM2,
         granule_material="MAPbI3",
         granule_radius_nm=250.0,

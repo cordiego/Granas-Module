@@ -113,11 +113,11 @@ class TestGranasModuleInput:
         )
 
     def test_blueprint_geometry(self):
-        """Blueprint geometry: 17 × 10.5 cm."""
-        assert BLUEPRINT_WIDTH_CM == 10.5
-        assert BLUEPRINT_HEIGHT_CM == 17.0
+        """Blueprint geometry: 21 × 34 cm (sub-cell)."""
+        assert BLUEPRINT_WIDTH_CM == 21.0
+        assert BLUEPRINT_HEIGHT_CM == 34.0
         total = BLUEPRINT_WIDTH_CM * BLUEPRINT_HEIGHT_CM
-        assert total == pytest.approx(178.5, abs=0.1)
+        assert total == pytest.approx(714.0, abs=0.1)
 
     def test_default_capacity_factor_mexico(self, default_inputs):
         """Default capacity factor should be Mexico's 0.22."""
