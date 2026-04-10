@@ -1,32 +1,14 @@
-# Byte-compiled
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Virtual environments
+*.so
+.env
 .venv/
 venv/
-env/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# State files
-*.pkl
-*.sibo
-.sibo/
-
-# Results
-granas_results/
-
-# Distribution
+*.egg-info/
 dist/
 build/
-*.egg-info/
+.streamlit/
+granas_results/
+*.html
+.DS_Store
